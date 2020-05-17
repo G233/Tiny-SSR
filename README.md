@@ -1,55 +1,31 @@
-**内容**：这一节增加了一些额外的辅助工具【`gzip`、缓存、`favicon`、`title`】；然后增加了生产环境的打包和运行命令。
+# Vue-SSR Demo
 
-1、 服务端使用 `compression` 开启 Gzip。
+依据[官方文档](https://ssr.vuejs.org/zh/)和官方[Demo](https://github.com/vuejs/vue-hackernews-2.0/)写出来的 Vue 服务端渲染 Deme。仅保留基础功能，包含大量注释。方便学习服务端渲染原理。（值得注意的是使用的使 webpack 3）
 
-2、缓存策略
+# Features
 
-**页面级别缓存**，如果内容不是用户特定 (`user-specific`)（即对于相同的 URL，总是为所有用户渲染相同的内容），我们可以利用名为 `micro-caching` 的缓存策略，来大幅度提高应用程序处理高流量的能力。
+- Vue + vue-router + vuex working together
+- Server-side data pre-fetching
+- Client-side state & DOM hydration
+- Hot-reload in development
 
-**组件级别缓存**，`vue-server-renderer` 内置支持组件级别缓存 (`component-level caching`)。要启用组件级别缓存，你需要在创建 `renderer` 时提供具体缓存实现方式(`cache implementation`)。典型做法是传入 `lru-cache`。
+# Architecture Overview
 
-3、使用 `serve-favicon` 中间件，从服务端来提供网页标签页的小 `logo`。
+![原理图](https://img.liuxiaogu.com/blog-img/2020-5-17-1589726832072.png)
+请配合[官方文档](https://ssr.vuejs.org/zh/)食用
 
-4、动态 `title`
+# Build Setup
 
-我们动态生成 `title` ，然后判断是服务端还是客户端，分别在各自对应的钩子函数，完成网页 `title` 的赋值操作（如果是服务端就在 `created` 钩子函数中，如果是客户端就是 `mounted` 钩子函数中）。然后使用 `Vue.mixin()` 将钩子函数混入。
-
-4.1、Head 管理
-
-使用相同的策略，你可以轻松地将此 `mixin` 扩展为通用的头部管理工具 (generic head management utility)。
-
-5、新增构建打包以及运行 server 的命令
-
-``` json
-"scripts": {
-    "dev": "npm start",
-    "start": "nodemon server.js",
-    "server": "cross-env NODE_ENV=production node server",
-    "build": "rimraf dist && npm run build:client && npm run build:server",
-    "build:client": "cross-env NODE_ENV=production webpack --config build/webpack.client.config.js --progress --hide-modules",
-    "build:server": "cross-env NODE_ENV=production webpack --config build/webpack.server.config.js --progress --hide-modules"
-}
 ```
-
-课程 7 的开发运行步骤：
-
-``` bash
-cd lesson7
-
 # install dependencies
-npm install
+yarn
 
-# serve in dev mode, with hot reload at localhost:8080
+# serve in dev mode, with hot reload at localhost:8111
 npm run dev
-```
 
-课程 7 构建以及 server 运行步骤：
-
-``` bash
-# build for production（打生产环境的包）
+# build for production
 npm run build
 
-# serve in production mode（运行生产环境）
-npm run server
+# serve in production mode
+npm server
 ```
-

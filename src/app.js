@@ -5,11 +5,12 @@ import { createStore } from './store'
 import { sync } from 'vuex-router-sync'
 import titleMixin from './util/title'
 
-// mixin for handling title 
+// mixin for handling title
 Vue.mixin(titleMixin)
 
 // 导出一个工厂函数，用于创建新的应用程序，router 和 store 实例
-export function createApp () {
+// 这是为了在服务端不发生状态感染
+export function createApp() {
   // 创建 router 和 store 实例
   const router = createRouter()
   const store = createStore()
@@ -22,7 +23,7 @@ export function createApp () {
     router,
     store,
     // 根实例简单的渲染应用程序组件
-    render: h => h(App)
+    render: (h) => h(App),
   })
 
   // 暴露 app, router 和 store

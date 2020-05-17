@@ -95,9 +95,7 @@ function render(req, res) {
     `,
     url: req.url,
   }
-
   // 这里无需传入一个应用程序，因为在执行 bundle 时已经自动创建过。
-  // 现在我们的服务器与应用程序已经解耦！
   renderer.renderToString(context, (err, html) => {
     if (err) {
       return handleError(err)
@@ -108,8 +106,6 @@ function render(req, res) {
     }
   })
 }
-
-// 在服务器处理函数中，调用 render 函数
 app.get(
   '*',
   isProd
@@ -118,12 +114,6 @@ app.get(
         readyPromise.then(() => render(req, res))
       }
 )
-
-// const port = process.env.PORT || 8888
-// app.listen(port, () => {
-//   console.log(`server started at localhost:${port}`)
-// })
-
 app.set('port', process.env.PORT || 8111)
 let hostname = '127.0.0.1'
 app.listen(app.get('port'), hostname, () => {
